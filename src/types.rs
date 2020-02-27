@@ -16,3 +16,10 @@ pub struct Issue {
     pub title: String,
     pub body: String,
 }
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+pub enum IssueResponse {
+    Ok { id: i32 },
+    Err { message: String },
+}

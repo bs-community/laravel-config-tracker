@@ -1,4 +1,4 @@
-use crate::{types::Issue, BASE_URL, UA};
+use crate::{types::{Issue, IssueResponse}, BASE_URL, UA};
 use reqwest::{ClientBuilder, Error};
 
 const ISSUE_TITLE: &str = "Laravel Config Has Changed.";
@@ -11,7 +11,7 @@ pub async fn create(token: &str, html_url: &str, diff: String) -> Result<(), Err
 
     let builder = ClientBuilder::new();
     let client = builder.user_agent(UA).build()?;
-    client
+    let resp = client
         .post(&format!(
             "{}/repos/bs-community/blessing-skin-server/issues",
             BASE_URL
@@ -22,7 +22,13 @@ pub async fn create(token: &str, html_url: &str, diff: String) -> Result<(), Err
             body: content,
         })
         .send()
+        .await?
+        .json::<IssueResponse>()
         .await?;
+
+    if let IssueResponse::Err { message } = resp {
+        eprintln!("Failed to create issue: {}", message);
+    }
 
     Ok(())
 }
