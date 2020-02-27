@@ -13,8 +13,8 @@ const BASE_URL: &str = "https://api.github.com";
 async fn main() -> Result<(), Error> {
     let token = env::var("GH_TOKEN").expect("missing GitHub token");
 
-    if let Some(html_url) = check::has_changed().await? {
-        let git_diff = diff::fetch_diff().await?;
+    if let Some(html_url) = check::has_changed(&token).await? {
+        let git_diff = diff::fetch_diff(&token).await?;
         issue::create(&token, &html_url, git_diff).await?;
     }
 
