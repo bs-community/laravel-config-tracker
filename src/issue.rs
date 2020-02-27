@@ -1,4 +1,7 @@
-use crate::{types::{Issue, IssueResponse}, BASE_URL, UA};
+use crate::{
+    types::{Issue, IssueResponse},
+    BASE_URL, UA,
+};
 use reqwest::{ClientBuilder, Error};
 
 const ISSUE_TITLE: &str = "Laravel Config Has Changed.";
