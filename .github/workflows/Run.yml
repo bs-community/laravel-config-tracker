@@ -13,6 +13,8 @@ jobs:
         run: |
           curl -fL -o tracker $(curl -s --user-agent 'Firefox 73.0' -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/bs-community/laravel-config-tracker/releases/latest | jq -r '.assets[0].browser_download_url')
           chmod +x ./tracker
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run
         run: ./tracker
         env:
