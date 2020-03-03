@@ -9,9 +9,11 @@ jobs:
     name: Check Changes
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Compile and run
-        run: cargo run
+      - name: Download binary
+        run: |
+          curl -fL -o tracker $(curl -s --user-agent 'Firefox 73.0' -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/bs-community/laravel-config-tracker/releases/latest | jq -r '.assets[0].browser_download_url')
+          chmod +x ./tracker
+      - name: Run
+        run: ./tracker
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
